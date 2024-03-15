@@ -6,16 +6,19 @@ import numpy as np
 import cv2
 import time
 
+# initialize the system
 system = SpinSystem()
 cameras = CameraList.create_from_system(system, update_cams=True, update_interfaces=True)
+# get the number of camera i.e index
 # print(cameras.get_size())
 
+# connect to camera
 camera = cameras.create_camera_by_index(0)
-
 camera.init_cam()
-print(camera.get_max_packet_size())
+# print(camera.get_max_packet_size())
 camera.begin_acquisition()
 
+# things for FPS display
 font = cv2.FONT_HERSHEY_SIMPLEX
 start_time = time.time()
 frames = 0 
@@ -32,7 +35,6 @@ while True:
         image_cam = camera.get_next_image(timeout=5)
         image_byarr = image_cam.get_image_data()
         np_array = np.array(image_byarr, dtype=np.uint8)
-            
             
         image_cam.release()  # Release resources immediately
         image = np_array.reshape(1200, 1600)
